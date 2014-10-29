@@ -4,11 +4,13 @@
 #include "MeshReader.h"
 #include "MeshSweeper.h"
 #include "Scene.h"
+#include "tinyxml2.h"
 
 #define WIN_W 1024
 #define WIN_H 768
 
 using namespace Graphics;
+using namespace tinyxml2;
 
 GLRenderer* renderer;
 Scene* scene;
@@ -231,17 +233,27 @@ newActor(
 }
 
 void
-createScene()
+createScene(bool isDefault, char* filename = NULL)
 {
-  TriangleMesh* s = MeshSweeper::makeSphere();
+	if (isDefault) //gera a cena padrão
+	{
+		TriangleMesh* s = MeshSweeper::makeSphere();
 
-  scene = new Scene("test");
-  scene->addActor(newActor(s, vec3(-3, -3, 0), vec3(1, 1, 1), Color::yellow));
-  scene->addActor(newActor(s, vec3(+3, -3, 0), vec3(2, 1, 1), Color::green));
-  scene->addActor(newActor(s, vec3(+3, +3, 0), vec3(1, 2, 1), Color::red));
-  scene->addActor(newActor(s, vec3(-3, +3, 0), vec3(1, 1, 2), Color::blue));
-  s = MeshReader().execute("f-16.obj");
-  scene->addActor(newActor(s, vec3(2, -4, -10)));
+		scene = new Scene("test");
+		scene->addActor(newActor(s, vec3(-3, -3, 0), vec3(1, 1, 1), Color::yellow));
+		scene->addActor(newActor(s, vec3(+3, -3, 0), vec3(2, 1, 1), Color::green));
+		scene->addActor(newActor(s, vec3(+3, +3, 0), vec3(1, 2, 1), Color::red));
+		scene->addActor(newActor(s, vec3(-3, +3, 0), vec3(1, 1, 2), Color::blue));
+		s = MeshReader().execute("f-16.obj");
+		scene->addActor(newActor(s, vec3(2, -4, -10)));
+	}
+	else //gera a cena baseada no arquivo a ser lido
+	{
+		XMLDocument doc;
+		doc.LoadFile(filename);
+
+	}
+  
 }
 
 int
@@ -259,7 +271,7 @@ main(int argc, char **argv)
   // print controls
   printControls();
   // create the scene
-  createScene();
+  createScene(true, argv[1]);
   // create the renderer
   renderer = new GLRenderer(*scene);
   renderer->renderMode = GLRenderer::Smooth;

@@ -121,6 +121,7 @@
     <ClCompile Include="source\Renderer.cpp" />
     <ClCompile Include="source\Scene.cpp" />
     <ClCompile Include="source\Sweeper.cpp" />
+    <ClCompile Include="source\tinyxml2.cpp" />
     <ClCompile Include="source\TriangleMesh.cpp" />
     <ClCompile Include="source\TriangleMeshShape.cpp" />
   </ItemGroup>
