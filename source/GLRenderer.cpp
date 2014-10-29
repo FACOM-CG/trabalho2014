@@ -13,6 +13,7 @@
 //  Source file for GL renderer.
 
 #include "GLRenderer.h"
+#include "MeshSweeper.h"
 
 using namespace Graphics;
 
@@ -20,10 +21,10 @@ template <typename T>
 inline GLsizeiptr
 sizeOf(int n)
 {
-  return sizeof(T)* n;
+  return sizeof(T) * n;
 }
 
-const char* vertexShader =
+static const char* vertexShader =
   "#version 400\n"
   "layout (location = 0) in vec4 position;\n"
   "layout (location = 1) in vec3 normal;\n"
@@ -49,7 +50,7 @@ const char* vertexShader =
 // The input variable "color" of the fragment shader is the
 // (interpolated) output variable "color" of the vertex shader
 // (note that the types and names have to be equal)
-const char* fragmentShader =
+static const char* fragmentShader =
   "#version 400\n"
   "in vec4 color;\n"
   "out vec4 fragmentColor;\n"
@@ -111,13 +112,24 @@ GLVertexArray::~GLVertexArray()
 //
 // GLRenderer implementation
 // ==========
+ObjectPtr<TriangleMesh> GLRenderer::cone;
+ObjectPtr<TriangleMesh> GLRenderer::cube;
+
+void
+GLRenderer::initMeshes()
+{
+  if (cone == 0)
+    cone = MeshSweeper::makeCone();
+  if (cube == 0)
+    cube = MeshSweeper::makeCube();
+}
+
 GLRenderer::GLRenderer(Scene& scene, Camera* camera):
   Renderer(scene, camera),
   renderMode(Smooth),
   program("renderer program")
 {
   flags.set(UseLights);
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
   program.addShader(GL_VERTEX_SHADER, GLSL::STRING, vertexShader);
   program.addShader(GL_FRAGMENT_SHADER, GLSL::STRING, fragmentShader);
   program.use();
@@ -126,10 +138,11 @@ GLRenderer::GLRenderer(Scene& scene, Camera* camera):
   OaLoc = program.getUniformLocation("Oa");
   OdLoc = program.getUniformLocation("Od");
   ambientLightLoc = program.getUniformLocation("ambientLight");
+  initMeshes();
 }
 
 void
-GLRenderer::drawAABB(const Bounds3& box) const
+GLRenderer::drawBoundingBox(const Bounds3& box)
 {
   vec3 p1 = box.getMin();
   vec3 p7 = box.getMax();
@@ -140,6 +153,7 @@ GLRenderer::drawAABB(const Bounds3& box) const
   vec3 p6(p7.x, p1.y, p7.z);
   vec3 p8(p1.x, p7.y, p7.z);
 
+  setLineColor(Color(0.2f, 0.2f, 0.2f));
   drawLine(p1, p2);
   drawLine(p2, p3);
   drawLine(p3, p4);
@@ -165,8 +179,6 @@ GLRenderer::update()
 {
   Renderer::update();
   vpMatrix = getVpMatrix(camera);
-  program.setUniform(vpMatrixLoc, vpMatrix);
-  program.setUniform(ambientLightLoc, scene->ambientLight);
   glViewport(0, 0, W, H);
 }
 
@@ -198,25 +210,23 @@ GLRenderer::startRender()
 
   glClearColor((float)bc.r, (float)bc.g, (float)bc.b, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  REAL s = camera->windowHeight();
+
+  s = dMin<REAL>(s, s * camera->getAspectRatio());
+  drawGround(s, s / 20);
+  program.use();
+  program.setUniform(vpMatrixLoc, vpMatrix);
+  program.setUniform(ambientLightLoc, scene->ambientLight);
 }
 
 void
 GLRenderer::endRender()
 {
+  if (flags.isSet(DrawSceneBounds))
+    drawBoundingBox(scene->boundingBox());
   glFlush();
-}
-
-template <typename T>
-inline T*
-mapBuffer(GLenum target, GLenum access)
-{
-  return (T*)glMapBuffer(target, access);
-}
-
-inline void
-unmapBuffer(GLenum target)
-{
-  glUnmapBuffer(target);
+  program.disuse();
 }
 
 inline GLVertexArray*
@@ -239,7 +249,7 @@ vertexArray(TriangleMesh* mesh)
 }
 
 void
-GLRenderer::drawMesh(const Model* model) const
+GLRenderer::drawMesh(const Model* model)
 {
   TriangleMesh* mesh = (TriangleMesh*)model->triangleMesh();
 
@@ -247,12 +257,27 @@ GLRenderer::drawMesh(const Model* model) const
     return;
   if (GLVertexArray* vb = vertexArray(mesh))
   {
-    const Material* m = model->getMaterial();
+    if (flags.isSet(DrawActorBounds))
+      drawBoundingBox(model->boundingBox());
 
-    program.setUniform(modelMatrixLoc, model->getMatrix());
+    const Material* m = model->getMaterial();
+    mat4 t = model->getMatrix();
+
+    program.setUniform(modelMatrixLoc, t);
     program.setUniform(OaLoc, m->surface.ambient);
     program.setUniform(OdLoc, m->surface.diffuse);
     vb->render();
+    if (flags.isSet(DrawNormals))
+      drawNormals(mesh, t);
+    if (flags.isSet(DrawAxes))
+    {
+      mat3 r(t);
+
+      r[0].normalize();
+      r[1].normalize();
+      r[2].normalize();
+      drawAxes(vec3(t[3]), r);
+    }
   }
 }
 
@@ -262,55 +287,126 @@ GLRenderer::renderWireframe()
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   for (ActorIterator ait(scene->getActorIterator()); ait;)
   {
-    Actor* a = ait++;
+    const Actor* a = ait++;
 
-    if (!a->isVisible())
-      continue;
-    drawMesh(a->getModel());
-    /*
-    if (const TriangleMesh* mesh = a->getModel()->triangleMesh())
-    {
-      const TriangleMesh::Arrays& meshData = mesh->getData();
-      vec3* vertices = meshData.vertices;
-      TriangleMesh::Triangle* triangles = meshData.triangles;
-
-      glBegin(GL_TRIANGLES);
-      for (int i = 0, n = meshData.numberOfTriangles; i < n; i++)
-        for (int d = 0; d < 3; d++)
-        {
-          const vec3& p = vertices[triangles[i].v[d]];
-          glVertex3f((float)p.x, (float)p.y, (float)p.z);
-        }
-      glEnd();
-    }
-    */
+    if (a->isVisible())
+      drawMesh(a->getModel());
   }
 }
 
 void
 GLRenderer::renderFaces()
 {
-  if (flags.isSet(DrawSceneBounds))
-    drawAABB(scene->boundingBox());
-  glPolygonMode(GL_FRONT, GL_FILL);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glEnable(GL_DEPTH_TEST);
   for (ActorIterator ait(scene->getActorIterator()); ait;)
   {
-    Actor* a = ait++;
+    const Actor* a = ait++;
 
-    if (!a->isVisible())
-      continue;
-    drawMesh(a->getModel());
+    if (a->isVisible())
+      drawMesh(a->getModel());
   }
   glDisable(GL_DEPTH_TEST);
 }
 
 void
-GLRenderer::drawLine(const vec3& p1, const vec3& p2) const
+GLRenderer::drawLine(const vec3& p1, const vec3& p2)
 {
-  glColor3f(0.5f, 0.6f, 0.5f);
-  glBegin(GL_LINES);
-  glVertex3f((float)p1.x, (float)p1.y, (float)p1.z);
-  glVertex3f((float)p2.x, (float)p2.y, (float)p2.z);
-  glEnd();
+  vec4 points[2];
+  
+  points[0] = vpMatrix.transform(vec4(p1, 1));
+  points[1] = vpMatrix.transform(vec4(p2, 1));
+  GLPainter::drawLine(points);
+}
+
+void
+GLRenderer::drawMesh(TriangleMesh* mesh, const mat4& m)
+{
+  if (GLVertexArray* vb = vertexArray(mesh))
+  {
+    using namespace GLSL;
+
+    Program* current = Program::getCurrent();
+
+    program.use();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    program.setUniform(modelMatrixLoc, m);
+    program.setUniform(OaLoc, getLineColor());
+    program.setUniform(OdLoc, getLineColor());
+    vb->render();
+    renderMode == Wireframe ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : 0;
+    Program::setCurrent(current);
+  }
+}
+
+void
+GLRenderer::drawNormals(TriangleMesh* mesh, const mat4& m)
+{
+  const TriangleMesh::Arrays& a = mesh->getData();
+
+  if (a.normals == 0)
+    return;
+  setLineColor(Color::white);
+  for (int i = 0; i < a.numberOfVertices; i++)
+  {
+    const vec3 p = m.transform3x4(a.vertices[i]);
+    const vec3 N = m.transformVector(a.normals[i]).versor();
+
+    drawVector(p, N, 0.5);
+  }
+}
+
+void
+GLRenderer::drawVector(const vec3& p, const vec3& d, REAL s)
+{
+  vec3 a;
+
+  if (Math::isZero(d.x) && Math::isZero(d.z))
+    a = d.y < 0 ? vec3(0, 0, 1) : vec3::up();
+  else
+    a.set(d.x, d.y + 1, d.z);
+
+  const vec3 end = p + d * s;
+  const mat4 m = mat4::TRS(end, quat(180, a), vec3(0.1f, 0.4f, 0.1f));
+
+  drawLine(p, end);
+  drawCone(m);
+}
+
+inline Color
+royalBlue()
+{
+  return Color(65, 105, 255);
+}
+
+void
+GLRenderer::drawAxes(const vec3& p, const mat3& r, REAL s)
+{
+  GLboolean dt = glIsEnabled(GL_DEPTH_TEST);
+
+  glDisable(GL_DEPTH_TEST);
+  setLineColor(Color::red);
+  drawVector(p, r[0], s);
+  setLineColor(Color::green);
+  drawVector(p, r[1], s);
+  setLineColor(royalBlue());
+  drawVector(p, r[2], s);
+  dt ? glEnable(GL_DEPTH_TEST) : 0;
+}
+
+void
+GLRenderer::drawGround(REAL size, REAL step)
+{
+  setLineColor(Color(0.2f, 0.2f, 0.2f));
+  for (float s = step; s <= size; s += step)
+  {
+    drawLine(vec3(-size, 0, +s), vec3(size, 0, +s));
+    drawLine(vec3(-size, 0, -s), vec3(size, 0, -s));
+    drawLine(vec3(+s, 0, -size), vec3(+s, 0, size));
+    drawLine(vec3(-s, 0, -size), vec3(-s, 0, size));
+  }
+  setLineColor(Color::red);
+  drawLine(vec3(-size, 0, 0), vec3(size, 0, 0));
+  setLineColor(royalBlue());
+  drawLine(vec3(0, 0, -size), vec3(0, 0, size));
 }

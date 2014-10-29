@@ -12,9 +12,7 @@
 // ========
 // Source file for material.
 
-#ifndef __Material_h
 #include "Material.h"
-#endif
 
 using namespace Graphics;
 

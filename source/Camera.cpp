@@ -305,24 +305,11 @@ Camera::rotateYX(REAL ay, REAL ax)
 //|  of ax (in degrees).                                |
 //[]---------------------------------------------------[]
 {
-  if (Math::isZero(ay))
-  {
-    elevation(ax);
-    return;
-  }
+  mat4 m = mat4::rotation(quat::eulerAngles(ax, ay, 0), focalPoint);
 
-  mat4 r = mat4::rotation(viewUp, ay, focalPoint);
-
-  if (!Math::isZero(ax))
-  {
-    vec3 axis = directionOfProjection.cross(viewUp);
-    mat4 q = mat4::rotation(axis, ax, focalPoint);
-
-    viewUp = q.transformVector(viewUp);
-    r = q * r;
-  }
-  position = r.transform3x4(position);
+  position = m.transform3x4(position);
   updateDOP();
+  viewUp = m.transformVector(viewUp);
 }
 
 void

@@ -32,38 +32,19 @@ public:
   // Make box
   static TriangleMesh* makeBox(
     const vec3& center,
-    const vec3& normal,
-    const vec3& up,
-    const vec3& size,
-    const mat4& m = mat4::identity());
-
-  static TriangleMesh* makeBox(
-    const vec3& center,
-    const vec3& orientation,
+    const quat& orientation,
     const vec3& scale);
 
   // Make cube
   static TriangleMesh* makeCube(
     const vec3& center,
-    const vec3& normal,
-    const vec3& up,
-    REAL size)
-  {
-    return makeBox(center, normal, up, vec3(size, size, size));
-  }
-
-  static TriangleMesh* makeCube(
-    const vec3& center,
-    const vec3& orientation,
+    const quat& orientation,
     REAL scale)
   {
     return makeBox(center, orientation, vec3(scale, scale, scale));
   }
 
-  static TriangleMesh* makeCube()
-  {
-    return makeCube(vec3::null(), vec3::null(), 1);
-  }
+  static TriangleMesh* makeCube();
 
   // Make sphere
   static TriangleMesh* makeSphere(
@@ -80,16 +61,25 @@ public:
   static TriangleMesh* makeCylinder(
     const vec3& center,
     REAL radius,
-    const vec3& normal,
-    REAL height,
+    const vec3& height,
     int segments = 16);
 
-private:
-  // Make cylinder
-  static TriangleMesh* makeCylinder(
-    const Polyline& circle,
-    const vec3& path,
-    const mat4& m = mat4::identity());
+  static TriangleMesh* makeCylinder()
+  {
+    return makeCylinder(vec3::null(), 1, vec3::up());
+  }
+
+  // Make cone
+  static TriangleMesh* makeCone(
+    const vec3& baseCenter,
+    REAL radius,
+    const vec3& height,
+    int segments = 16);
+
+  static TriangleMesh* makeCone()
+  {
+    return makeCone(vec3::null(), 1, vec3::up());
+  }
 
 }; // MeshSweeper
 

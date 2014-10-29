@@ -344,7 +344,7 @@ Program::use()
       link();
     case BUILT:
       if (current != 0)
-        current->disuse();
+        current->state = BUILT;
       glUseProgram(handle);
       state = IN_USE;
       current = this;

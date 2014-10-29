@@ -35,8 +35,6 @@ namespace Graphics
 // =====
 class Light: public SceneComponent
 {
-  typedef Vector3<REAL> vec3;
-
 public:
   enum
   {
@@ -120,7 +118,7 @@ lightVector(
     L = position.versor();
     distance = FloatInfo<REAL>::inf();
   }
-  else if (!Math::isZero<REAL>(distance = (L = position - P).length()))
+  else if (!Math::isZero<REAL>(distance = (L = P - position).length()))
     L *= Math::inverse<REAL>(distance);
 }
 

@@ -46,17 +46,7 @@ public:
   virtual mat4 getMatrix() const = 0;
 
   virtual void setMaterial(Material*) = 0;
-  virtual void setMatrix(const mat4&) = 0;
-
-  void setTRS(const vec3& p, const quat& q, const vec3& s)
-  {
-    setMatrix(mat4::TRS(p, q, s));
-  }
-
-  void setTRS(const vec3& p, const vec3& a, const vec3& s)
-  {
-    setMatrix(mat4::TRS(p, a, s));
-  }
+  virtual void setMatrix(const vec3&, const quat&, const vec3&) = 0;
 
 }; // Model
 
@@ -78,19 +68,19 @@ public:
     return matrix;
   }
 
-  void setMatrix(const mat4& m)
-  {
-    matrix = m;
-  }
-
   void setMaterial(Material* m)
   {
     material = m == 0 ? Material::getDefault() : m;
   }
 
+  void setMatrix(const vec3& p, const quat& q, const vec3& s)
+  {
+    matrix = mat4::TRS(p, q, s);
+  }
+
 protected:
-  mat4 matrix;
   ObjectPtr<Material> material;
+  mat4 matrix;
 
   // Protected constructors
   Primitive():

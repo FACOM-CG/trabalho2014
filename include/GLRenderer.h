@@ -15,7 +15,7 @@
 //  ========
 //  Class definition for GL renderer.
 
-#include "GLProgram.h"
+#include "GLPainter.h"
 #include "Renderer.h"
 #include "TriangleMeshShape.h"
 
@@ -33,10 +33,11 @@ public:
   // Contructor
   GLVertexArray(const TriangleMesh*);
 
-  void render();
-
   // Destructor
   ~GLVertexArray();
+
+  // Render triangles
+  void render();
 
 private:
   GLuint vao;
@@ -50,7 +51,7 @@ private:
 //
 // GLRenderer: GL renderer class
 // ==========
-class GLRenderer: public Renderer
+class GLRenderer: public Renderer, public GLPainter
 {
 public:
   enum RenderMode
@@ -66,7 +67,10 @@ public:
   {
     UseLights = 1,
     DrawSceneBounds = 2,
-    UseVertexColors = 4
+    DrawActorBounds = 4,
+    DrawAxes = 8,
+    DrawNormals = 16,
+    UseVertexColors = 32
   };
 
   RenderMode renderMode;
@@ -78,26 +82,46 @@ public:
   void update();
   void render();
 
+  void drawLine(const vec3&, const vec3&);
+  void drawBoundingBox(const Bounds3&);
+  void drawVector(const vec3&, const vec3&, REAL);
+
+  void drawCone(const mat4& m = mat4::identity())
+  {
+    drawMesh(cone, m);
+  }
+
+  void drawCube(const mat4& m = mat4::identity())
+  {
+    drawMesh(cube, m);
+  }
+
 protected:
   virtual void startRender();
   virtual void endRender();
   virtual void renderWireframe();
   virtual void renderFaces();
 
-  virtual void drawLine(const vec3&, const vec3&) const;
-  virtual void drawAABB(const Bounds3&) const;
-
-  // TODO
-  void drawMesh(const Model*) const;
+  void drawMesh(const Model*);
+  void drawAxes(const vec3&, const mat3&, REAL = 1);
 
 private:
-  mat4 vpMatrix;
   GLSL::Program program;
+  mat4f vpMatrix;
   GLint vpMatrixLoc;
   GLint modelMatrixLoc;
   GLint ambientLightLoc;
   GLint OaLoc;
   GLint OdLoc;
+
+  void drawMesh(TriangleMesh*, const mat4&);
+  void drawNormals(TriangleMesh*, const mat4&);
+  void drawGround(REAL, REAL);
+
+  static ObjectPtr<TriangleMesh> cone;
+  static ObjectPtr<TriangleMesh> cube;
+
+  static void initMeshes();
 
 }; // GLRenderer
 

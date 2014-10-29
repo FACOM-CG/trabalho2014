@@ -5,8 +5,8 @@
 #include "MeshSweeper.h"
 #include "Scene.h"
 
-#define WIN_W 800
-#define WIN_H 600
+#define WIN_W 1024
+#define WIN_H 768
 
 using namespace Graphics;
 
@@ -40,8 +40,13 @@ printControls()
     "(+) zoom in      (-) zoom out\n"
     "GL render mode controls:\n"
     "------------------------\n"
+    "(b) bounds       (n) normals       (x) axes\n"
     "(,) wireframe    (/) Smooth\n\n");
 }
+
+static bool drawAxes = false;
+static bool drawBounds = false;
+static bool drawNormals = false;
 
 void
 processKeys()
@@ -86,6 +91,19 @@ processKeys()
         break;
       case 'p':
         camera->changeProjectionType();
+        break;
+      case 'b':
+        drawBounds ^= true;
+        renderer->flags.enable(GLRenderer::DrawSceneBounds, drawBounds);
+        renderer->flags.enable(GLRenderer::DrawActorBounds, drawBounds);
+        break;
+      case 'x':
+        drawAxes ^= true;
+        renderer->flags.enable(GLRenderer::DrawAxes, drawAxes);
+        break;
+      case 'n':
+        drawNormals ^= true;
+        renderer->flags.enable(GLRenderer::DrawNormals, drawNormals);
         break;
       case ',':
         renderer->renderMode = GLRenderer::Wireframe;
@@ -147,6 +165,18 @@ motionCallback(int x, int y)
 }
 
 void
+mouseWheelCallback(int, int dir, int, int y)
+{
+  if (y == 0)
+    return;
+  if (dir > 0)
+    renderer->getCamera()->zoom(ZOOM_SCALE);
+  else
+    renderer->getCamera()->zoom(1.0f / ZOOM_SCALE);
+  glutPostRedisplay();
+}
+
+void
 idleCallback()
 {
   static GLint currentTime;
@@ -196,7 +226,7 @@ newActor(
   Primitive* p = new TriangleMeshShape(mesh);
 
   p->setMaterial(MaterialFactory::New(color));
-  p->setTRS(position, quat::identity(), size);
+  p->setMatrix(position, quat::identity(), size);
   return new Actor(*p);
 }
 
@@ -223,6 +253,7 @@ main(int argc, char **argv)
   glutReshapeFunc(reshapeCallback);
   glutMouseFunc(mouseCallback);
   glutMotionFunc(motionCallback);
+  glutMouseWheelFunc(mouseWheelCallback);
   glutKeyboardFunc(keyboardCallback);
   glutKeyboardUpFunc(keyboardUpCallback);
   // print controls

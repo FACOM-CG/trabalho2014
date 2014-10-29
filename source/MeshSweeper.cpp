@@ -25,134 +25,143 @@ using namespace Graphics;
 //
 TriangleMesh*
 MeshSweeper::makeCylinder(
-  const Polyline& circle,
-  const vec3& path,
-  const mat4& m)
-//[]----------------------------------------------------[]
-//|  Make cylinder                                       |
-//[]----------------------------------------------------[]
-{
-  int np = circle.getNumberOfVertices();
-  int nv = np * 2; // number of vertices
-  int nb = np - 2; // number of triangles of the base
-  int nt = nv + 2 * nb; // number of triangles
-  TriangleMesh::Arrays data;
-
-  data.vertices = new vec3[data.numberOfVertices = nv];
-  data.triangles = new TriangleMesh::Triangle[data.numberOfTriangles = nt];
-
-  vec3 c(0, 0, 0);
-
-  if (true)
-  {
-    Polyline::VertexIterator vit(circle.getVertexIterator());
-
-    for (int i = 0; i < np; i++)
-    {
-      const vec3& p = vit++.position;
-
-      c += p;
-      data.vertices[i + np] = m.transform3x4(p);
-      data.vertices[i] = m.transform3x4(p + path);
-    }
-    c *= Math::inverse(REAL(np));
-  }
-
-  TriangleMesh::Triangle* triangle = data.triangles;
-
-  for (int i = 0; i < np; i++)
-  {
-    int j = (i + np);
-    int k = (i + 1) % np;
-
-    triangle->setVertices(i, j, k);
-    triangle[1].setVertices(j, k + np, k);
-    triangle += 2;
-  }
-
-  int v0 = 0;
-  int v1 = 1;
-  int v2 = 2;
-
-  for (int i = 0; i < nb; i++)
-  {
-    triangle->setVertices(v0, v1, v2);
-    triangle[nb].setVertices(v0 + np, v2 + np, v1 + np);
-    triangle++;
-    v2 = ((v1 = (v0 = v2) + 1) + 1) % np;
-  }
-
-  TriangleMesh* mesh = new TriangleMesh(data);
-
-  mesh->computeNormals();
-  return mesh;
-}
-
-TriangleMesh*
-MeshSweeper::makeBox(
-  const vec3& center,
-  const vec3& normal,
-  const vec3& up,
-  const vec3& size,
-  const mat4& m)
-//[]----------------------------------------------------[]
-//|  Make box 1                                          |
-//[]----------------------------------------------------[]
-{
-  Polyline poly;
-  vec3 N(normal.versor());
-  vec3 U(up.cross(normal).versor());
-  vec3 V(N.cross(U));
-
-  N *= size.z * (REAL)0.5;
-  U *= size.x * (REAL)0.5;
-  V *= size.y * (REAL)0.5;
-  poly.mv(center - U - V - N);
-  poly.mv(center + U - V - N);
-  poly.mv(center + U + V - N);
-  poly.mv(center - U + V - N);
-  poly.close();
-  return makeCylinder(poly, 2 * N, m);
-}
-
-TriangleMesh*
-MeshSweeper::makeBox(
-  const vec3& center,
-  const vec3& rotation,
-  const vec3& scale)
-//[]----------------------------------------------------[]
-//|  Make box 2                                          |
-//[]----------------------------------------------------[]
-{
-#define BOX_O  vec3(0,0,0)
-#define BOX_X  vec3(1,0,0)
-#define BOX_Y  vec3(0,1,0)
-#define BOX_Z  vec3(0,0,1)
-#define BOX_S  vec3(1,1,1)
-
-  mat4 m = mat4::TRS(center, quat::eulerAngles(rotation), scale);
-  return makeBox(BOX_O, BOX_Z, BOX_Y, BOX_S, m);
-
-#undef BOX_O
-#undef BOX_X
-#undef BOX_Y
-#undef BOX_Z
-#undef BOX_S
-}
-
-TriangleMesh*
-MeshSweeper::makeCylinder(
   const vec3& center,
   REAL radius,
-  const vec3& normal,
-  REAL height,
+  const vec3& height,
   int segments)
 //[]----------------------------------------------------[]
 //|  Make cylinder                                       |
 //[]----------------------------------------------------[]
 {
-  Polyline circle = makeCircle(center, radius, normal, segments);
-  return makeCylinder(circle, normal * -height);
+  const vec3 baseCenter = center - height * REAL(0.5);
+  Polyline base = makeCircle(baseCenter, radius, height, segments);
+  const int nt = segments << 2; // number of triangles
+  const int nv = nt + 2; // number of vertices
+  TriangleMesh::Arrays data;
+  const int b = segments << 1;
+
+  data.vertices = new vec3[data.numberOfVertices = nv];
+  data.normals = new vec3[data.numberOfNormals = nv];
+  data.triangles = new TriangleMesh::Triangle[data.numberOfTriangles = nt];
+  if (true)
+  {
+    Polyline::VertexIterator vit(base.getVertexIterator());
+    const vec3 baseNormal = -height.versor();
+    const REAL invR = Math::inverse<REAL>(radius);
+    int k = b;
+    int l = k + segments + 1;
+
+    for (int i = 0; i < segments; i++, k++, l++)
+    {
+      const vec3& p = vit++.position;
+      int j = i + segments;
+
+      data.vertices[i] = data.vertices[k] = p + height;
+      data.vertices[j] = data.vertices[l] = p;
+      data.normals[i] = data.normals[j] = invR * (p - baseCenter);
+      data.normals[k] = -(data.normals[l] = baseNormal);
+    }
+    data.vertices[k] = baseCenter + height;
+    data.vertices[l] = baseCenter;
+    data.normals[k] = -(data.normals[l] = baseNormal);
+  }
+
+  TriangleMesh::Triangle* triangle = data.triangles;
+  const int s = b + segments;
+
+  for (int t = b + 1, i = 0; i < segments; i++, triangle++)
+  {
+    int j = i + segments;
+    int k = (i + 1) % segments;
+    int l = k + segments;
+
+    triangle->setVertices(i, j, k);
+    triangle[segments].setVertices(j, l, k);
+    triangle[b].setVertices(s, i + b, k + b);
+    triangle[s].setVertices(nv - 1, l + t, j + t);
+  }
+  return new TriangleMesh(data);
+}
+
+inline void
+setBoxVertices(vec3* v)
+{
+  const vec3 p1(-1, -1, -1);
+  const vec3 p2(+1, -1, -1);
+  const vec3 p3(+1, +1, -1);
+  const vec3 p4(-1, +1, -1);
+  const vec3 p5(-1, -1, +1);
+  const vec3 p6(+1, -1, +1);
+  const vec3 p7(+1, +1, +1);
+  const vec3 p8(-1, +1, +1);
+
+  v[ 0] = p1; v[ 1] = p5; v[ 2] = p8; v[ 3] = p4; // x = -1
+  v[ 4] = p2; v[ 5] = p3; v[ 6] = p7; v[ 7] = p6; // x = +1
+  v[ 8] = p1; v[ 9] = p2; v[10] = p6; v[11] = p5; // y = -1
+  v[12] = p4; v[13] = p8; v[14] = p7; v[15] = p3; // y = +1
+  v[16] = p1; v[17] = p4; v[18] = p3; v[19] = p2; // z = -1
+  v[20] = p5; v[21] = p6; v[22] = p7; v[23] = p8; // z = +1
+}
+
+inline void
+setBoxNormals(vec3* n)
+{
+  const vec3 n1(-1, 0, 0);
+  const vec3 n2(+1, 0, 0);
+  const vec3 n3(0, -1, 0);
+  const vec3 n4(0, +1, 0);
+  const vec3 n5(0, 0, -1);
+  const vec3 n6(0, 0, +1);
+
+  n[ 0] = n[ 1] = n[ 2] = n[ 3] = n1; // x = -1
+  n[ 4] = n[ 5] = n[ 6] = n[ 7] = n2; // x = +1
+  n[ 8] = n[ 9] = n[10] = n[11] = n3; // y = -1
+  n[12] = n[13] = n[14] = n[15] = n4; // y = +1
+  n[16] = n[17] = n[18] = n[19] = n5; // z = -1
+  n[20] = n[21] = n[22] = n[23] = n6; // z = +1
+}
+
+inline void
+setBoxTriangles(TriangleMesh::Triangle* t)
+{
+  t[ 0].setVertices( 0,  1,  2); t[ 1].setVertices( 2,  3,  0);
+  t[ 2].setVertices( 4,  5,  7); t[ 3].setVertices( 5,  6,  7);
+  t[ 4].setVertices( 8,  9, 11); t[ 5].setVertices( 9, 10, 11);
+  t[ 6].setVertices(12, 13, 14); t[ 7].setVertices(14, 15, 12);
+  t[ 8].setVertices(16, 17, 19); t[ 9].setVertices(17, 18, 19);
+  t[10].setVertices(20, 21, 22); t[11].setVertices(22, 23, 20);
+}
+
+TriangleMesh*
+MeshSweeper::makeCube()
+//[]----------------------------------------------------[]
+//|  Make cube                                           |
+//[]----------------------------------------------------[]
+{
+  TriangleMesh::Arrays data;
+
+  data.vertices = new vec3[data.numberOfVertices = 24];
+  data.normals = new vec3[data.numberOfNormals = 24];
+  data.triangles = new TriangleMesh::Triangle[data.numberOfTriangles = 12];
+  setBoxVertices(data.vertices);
+  setBoxNormals(data.normals);
+  setBoxTriangles(data.triangles);
+  return new TriangleMesh(data);
+}
+
+TriangleMesh*
+MeshSweeper::makeBox(
+  const vec3& center,
+  const quat& orientation,
+  const vec3& scale)
+//[]----------------------------------------------------[]
+//|  Make box                                            |
+//[]----------------------------------------------------[]
+{
+  TriangleMesh* mesh = makeCube();
+
+  mesh->transform(mat4::TRS(center, orientation, scale));
+  return mesh;
 }
 
 TriangleMesh*
@@ -164,14 +173,15 @@ MeshSweeper::makeSphere(const vec3& center, REAL radius, int mers)
   if (mers < 6)
     mers = 6;
 
-  int sections = mers;
-  int nv = sections * mers + 2; // number of vertices (and normals)
-  int nt = 2 * mers * sections; // number of triangles
+  const int sections = mers;
+  const int nv = sections * mers + 2; // number of vertices (and normals)
+  const int nt = 2 * mers * sections; // number of triangles
   TriangleMesh::Arrays data;
 
   data.vertices = new vec3[data.numberOfVertices = nv];
   data.normals = new vec3[data.numberOfNormals = nv];
   data.triangles = new TriangleMesh::Triangle[data.numberOfTriangles = nt];
+  if (true)
   {
     Polyline arc = makeArc(center, radius, vec3(0, 0, 1), 180, sections + 1);
     Polyline::VertexIterator vit = arc.getVertexIterator();
@@ -231,6 +241,57 @@ MeshSweeper::makeSphere(const vec3& center, REAL radius, int mers)
 
     triangle->setVertices(i, j, k);
     triangle++;
+  }
+  return new TriangleMesh(data);
+}
+
+TriangleMesh*
+MeshSweeper::makeCone(
+  const vec3& baseCenter,
+  REAL radius,
+  const vec3& height,
+  int segments)
+//[]----------------------------------------------------[]
+//|  Make cone                                           |
+//[]----------------------------------------------------[]
+{
+  Polyline base = makeCircle(baseCenter, radius, height, segments);
+  const int nt = segments << 1; // number of triangles
+  const int nv = nt + 2; // number of vertices
+  TriangleMesh::Arrays data;
+
+  data.vertices = new vec3[data.numberOfVertices = nv];
+  data.normals = new vec3[data.numberOfNormals = nv];
+  data.triangles = new TriangleMesh::Triangle[data.numberOfTriangles = nt];
+  if (true)
+  {
+    Polyline::VertexIterator vit(base.getVertexIterator());
+    const vec3 baseNormal = -height.versor();
+    const REAL invR = Math::inverse<REAL>(radius);
+    int i = 0;
+    int j = segments + 1;
+
+    for (; i < segments; i++, j++)
+    {
+      const vec3& p = vit++.position;
+
+      data.vertices[i] = data.vertices[j] = p;
+      data.normals[i] = invR * (p - baseCenter);
+      data.normals[j] = baseNormal;
+    }
+    data.vertices[i] = baseCenter + height;
+    data.vertices[j] = baseCenter;
+    data.normals[i] = -(data.normals[j] = baseNormal);
+  }
+
+  TriangleMesh::Triangle* triangle = data.triangles;
+
+  for (int t = segments + 1, i = 0; i < segments; i++, triangle++)
+  {
+    int j = (i + 1) % segments;
+
+    triangle->setVertices(segments, i, j);
+    triangle[segments].setVertices(nv - 1, j + t, i + t);
   }
   return new TriangleMesh(data);
 }

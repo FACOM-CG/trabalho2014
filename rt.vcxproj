@@ -112,6 +112,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Color.cpp" />
+    <ClCompile Include="source\GLPainter.cpp" />
     <ClCompile Include="source\GLProgram.cpp" />
     <ClCompile Include="source\GLRenderer.cpp" />
     <ClCompile Include="source\Material.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="include\Core\Global.h" />
     <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\Geometry\Bounds3.h" />
+    <ClInclude Include="include\GLPainter.h" />
     <ClInclude Include="include\GLProgram.h" />
     <ClInclude Include="include\GLRenderer.h" />
     <ClInclude Include="include\Graphics\Color.h" />

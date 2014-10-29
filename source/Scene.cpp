@@ -12,9 +12,7 @@
 //  ========
 //  Source file for scene.
 
-#ifndef __Scene_h
 #include "Scene.h"
-#endif
 
 using namespace Graphics;
 

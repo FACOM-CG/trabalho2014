@@ -241,13 +241,7 @@ public:
   Bounds3 boundingBox() const;
 
   void computeNormals();
-
-  void setColors(Color* colors, int n)
-  {
-    delete data.colors;
-    data.colors = colors;
-    data.numberOfColors = n;
-  }
+  void transform(const mat4&);
 
   const Arrays& getData() const
   {

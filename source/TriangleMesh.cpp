@@ -129,6 +129,15 @@ TriangleMesh::computeNormals()
 }
 
 void
+TriangleMesh::transform(const mat4& m)
+{
+  for (int i = 0; i < data.numberOfVertices; i++)
+    data.vertices[i] = m.transform3x4(data.vertices[i]);
+  for (int i = 0; i < data.numberOfNormals; i++)
+    data.normals[i] = m.transformVector(data.normals[i]).versor();
+}
+
+void
 TriangleMesh::Arrays::print(FILE* f) const
 //[]---------------------------------------------------[]
 //|  Print                                              |

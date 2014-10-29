@@ -111,6 +111,24 @@ public:
   // Get atributte location
   GLint getAttributeLocation(const char*) const;
 
+  // Get the current program
+  static Program* getCurrent()
+  {
+    return current;
+  }
+
+  // Set the current program
+  static void setCurrent(Program* c)
+  {
+    if (c != current)
+    {
+      if (c == 0)
+        current->disuse();
+      else
+        c->use();
+    }
+  }
+
 protected:
   // Link program
   void link();
