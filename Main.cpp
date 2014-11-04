@@ -5,6 +5,7 @@
 #include "MeshSweeper.h"
 #include "Scene.h"
 #include "tinyxml2.h"
+#include <string.h>
 
 #define WIN_W 1024
 #define WIN_H 768
@@ -252,7 +253,7 @@ createScene(bool isDefault, char* filename = NULL)
 		XMLDocument doc;
 		doc.LoadFile(filename);
 		XMLNode* root = doc.FirstChildElement("rt");
-		XMLNode* cur, aux;
+		XMLNode* cur, *aux;
 
 		//checa a existencia do elemento image
 		if (root->FirstChildElement("image"))
@@ -270,33 +271,113 @@ createScene(bool isDefault, char* filename = NULL)
 		//checa a existencia do elemento camera
 		if (root->FirstChildElement("camera"))
 		{
+			Camera* camera = new Camera();
 			cur = root->FirstChildElement("camera");
+
 			if (cur->FirstChildElement("position"))
 			{
-				//TODO: alocar o position
+				string text = cur->FirstChildElement("position")->GetText();
+				vec3 pos;
+
+				int c_pos1 = text.find(" ");
+				int c_pos2 = text.find(" ", c_pos1+1);
+				int c_pos3 = text.find(" ", c_pos2 + 1);
+
+				pos.x = atof(text.substr(0, c_pos1 - 1).c_str());
+				pos.y = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+				pos.z = atof(text.substr(c_pos2 + 1).c_str());
+				
+				camera->setPosition(pos);
 			}
 			if (cur->FirstChildElement("to"))
 			{
-				//TODO: alocar o to
+				string text = cur->FirstChildElement("to")->GetText();
+				vec3 to;
+
+				int c_pos1 = text.find(" ");
+				int c_pos2 = text.find(" ", c_pos1 + 1);
+				int c_pos3 = text.find(" ", c_pos2 + 1);
+
+				to.x = atof(text.substr(0, c_pos1 - 1).c_str());
+				to.y = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+				to.z = atof(text.substr(c_pos2 + 1).c_str());
+
+				camera->setDirectionOfProjection(to);
 			}
 			if (cur->FirstChildElement("up"))
 			{
-				//TODO: alocar o up
+				string text = cur->FirstChildElement("up")->GetText();
+				vec3 up;
+
+				int c_pos1 = text.find(" ");
+				int c_pos2 = text.find(" ", c_pos1 + 1);
+				int c_pos3 = text.find(" ", c_pos2 + 1);
+
+				up.x = atof(text.substr(0, c_pos1 - 1).c_str());
+				up.y = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+				up.z = atof(text.substr(c_pos2 + 1).c_str());
+
+				camera->setViewUp(up);
 			}
 			if (cur->FirstChildElement("angle"))
 			{
-				//TODO: alocar o angle
+				string text = cur->FirstChildElement("angle")->GetText();
+				camera->setViewAngle(atof(text.c_str()));
 			}
 			if (cur->FirstChildElement("aspect"))
 			{
-				//TODO: alocar o aspect
+				float aspect;
+				int w, h;
+
+				string text = cur->FirstChildElement("aspect")->GetText();
+
+				int c_pos1 = text.find(":");
+
+				w = atoi(text.substr(0, c_pos1 - 1).c_str());
+				h = atoi(text.substr(c_pos1 + 1).c_str());
+				aspect = w / h;
+
+				camera->setAspectRatio(aspect);
 			}
 		}
 
+		//Leitura do elemento scene
 		cur = root->FirstChildElement("scene");
-		while (aux = cur->NextSiblingElement)
+		while (aux = cur->NextSiblingElement())
 		{
-			if (aux)
+			if (aux->Value() == "background")
+			{
+				//TODO: alocar background
+			}
+			else if (aux->Value() == "ambient")
+			{
+				//TODO: alocar ambient
+			}
+			else if (aux->Value() == "light")
+			{
+				//TODO: alocar light
+			}
+			else if (aux->Value() == "mesh")
+			{
+				//TODO: alocar mesh
+			}
+			else if (aux->Value() == "sphere")
+			{
+				//TODO: alocar sphere
+			}
+			else if (aux->Value() == "box")
+			{
+				//TODO: alocar box
+			}
+			else if (aux->Value() == "cone")
+			{
+				//TODO: alocar cone
+			}
+			else if (aux->Value() == "cylinder")
+			{
+				//TODO: alocar cylinder
+			}
+
 		}
 
 
