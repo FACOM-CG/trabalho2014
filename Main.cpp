@@ -251,6 +251,55 @@ createScene(bool isDefault, char* filename = NULL)
 	{
 		XMLDocument doc;
 		doc.LoadFile(filename);
+		XMLNode* root = doc.FirstChildElement("rt");
+		XMLNode* cur, aux;
+
+		//checa a existencia do elemento image
+		if (root->FirstChildElement("image"))
+		{
+			cur = root->FirstChildElement("image");
+			if (cur->FirstChildElement("width"))
+			{
+				//TODO: alocar o width
+			}
+			if (cur->FirstChildElement("height"))
+			{
+				//TODO: alocar o height
+			}
+		}
+		//checa a existencia do elemento camera
+		if (root->FirstChildElement("camera"))
+		{
+			cur = root->FirstChildElement("camera");
+			if (cur->FirstChildElement("position"))
+			{
+				//TODO: alocar o position
+			}
+			if (cur->FirstChildElement("to"))
+			{
+				//TODO: alocar o to
+			}
+			if (cur->FirstChildElement("up"))
+			{
+				//TODO: alocar o up
+			}
+			if (cur->FirstChildElement("angle"))
+			{
+				//TODO: alocar o angle
+			}
+			if (cur->FirstChildElement("aspect"))
+			{
+				//TODO: alocar o aspect
+			}
+		}
+
+		cur = root->FirstChildElement("scene");
+		while (aux = cur->NextSiblingElement)
+		{
+			if (aux)
+		}
+
+
 
 	}
   
@@ -271,7 +320,7 @@ main(int argc, char **argv)
   // print controls
   printControls();
   // create the scene
-  createScene(true, argv[1]);
+  createScene(false, argv[1]);
   // create the renderer
   renderer = new GLRenderer(*scene);
   renderer->renderMode = GLRenderer::Smooth;
