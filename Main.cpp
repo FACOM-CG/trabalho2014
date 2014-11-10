@@ -15,6 +15,7 @@ using namespace tinyxml2;
 
 GLRenderer* renderer;
 Scene* scene;
+Camera* camera;
 
 // Mouse globals
 int mouseX, mouseY;
@@ -269,9 +270,8 @@ createScene(bool isDefault, char* filename = NULL)
 			}
 		}
 		//checa a existencia do elemento camera
-		if (root->FirstChildElement("camera"))
+		/*if (root->FirstChildElement("camera"))
 		{
-			Camera* camera = new Camera();
 			cur = root->FirstChildElement("camera");
 
 			if (cur->FirstChildElement("position"))
@@ -339,31 +339,86 @@ createScene(bool isDefault, char* filename = NULL)
 
 				camera->setAspectRatio(aspect);
 			}
-		}
+		}*/
 
 		//Leitura do elemento scene
 		cur = root->FirstChildElement("scene");
-		while (aux = cur->NextSiblingElement())
+		scene = new Scene("Pavarine");
+		for (tinyxml2::XMLElement* aux = cur->FirstChildElement(); aux != NULL; aux = aux->NextSiblingElement())
 		{
-			if (aux->Value() == "background")
+			if ( strcmp(aux->Value(),"background") == 0 )
 			{
-				//TODO: alocar background
+				printf("achou background a scene\n");
+				string text = cur->FirstChildElement("background")->GetText();
+				Color color;
+
+				int c_pos1 = text.find(" ");
+				int c_pos2 = text.find(" ", c_pos1 + 1);
+				int c_pos3 = text.find(" ", c_pos2 + 1);
+
+				color.r = atof(text.substr(0, c_pos1 - 1).c_str());
+				color.g = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+				color.b = atof(text.substr(c_pos2 + 1).c_str());
+
+				scene->backgroundColor = color;
+				
 			}
-			else if (aux->Value() == "ambient")
+			else if (strcmp(aux->Value(), "ambient") == 0)
 			{
-				//TODO: alocar ambient
+				printf("achou ambient da scene\n");
+				string text = cur->FirstChildElement("ambient")->GetText();
+				Color color;
+
+				int c_pos1 = text.find(" ");
+				int c_pos2 = text.find(" ", c_pos1 + 1);
+				int c_pos3 = text.find(" ", c_pos2 + 1);
+
+				color.r = atof(text.substr(0, c_pos1 - 1).c_str());
+				color.g = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+				color.b = atof(text.substr(c_pos2 + 1).c_str());
+
+				scene->ambientLight = color;
 			}
-			else if (aux->Value() == "light")
+			else if (strcmp(aux->Value(), "light") == 0)
 			{
 				//TODO: alocar light
 			}
-			else if (aux->Value() == "mesh")
+			else if (strcmp(aux->Value(), "mesh") == 0)
 			{
 				//TODO: alocar mesh
 			}
-			else if (aux->Value() == "sphere")
+			else if (strcmp(aux->Value(), "sphere") == 0)
 			{
-				//TODO: alocar sphere
+				printf("achou sphere\n");
+				XMLElement* aux2;
+				aux2 = aux;
+
+				vec3 center;
+				vec3 radius;
+
+				if (aux2->FirstChildElement("center"))
+				{
+					string text = aux2->FirstChildElement("center")->GetText();
+					
+					int c_pos1 = text.find(" ");
+					int c_pos2 = text.find(" ", c_pos1 + 1);
+					int c_pos3 = text.find(" ", c_pos2 + 1);
+
+					center.x = atof(text.substr(0, c_pos1 - 1).c_str());
+					center.y = atof(text.substr(c_pos1 + 1, c_pos2 - 1).c_str());
+					center.z = atof(text.substr(c_pos2 + 1).c_str());
+				}
+				if (aux2->FirstChildElement("radius"))
+				{
+					string text = aux2->FirstChildElement("radius")->GetText();
+					radius.x = atof(text.c_str());
+					radius.y = atof(text.c_str());
+					radius.z = atof(text.c_str());
+				}
+
+				TriangleMesh* s = MeshSweeper::makeSphere();
+				scene->addActor(newActor(s, center, radius));
+
 			}
 			else if (aux->Value() == "box")
 			{
