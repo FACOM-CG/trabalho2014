@@ -1,0 +1,530 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Flags" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAABAAEAAAAAAEIAAQABAAAAAAAIAAIAAAgAAAAAAA=</HashCode>
+      <FileName>include\Core\Flags.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Color" Collapsed="true">
+    <Position X="24.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAQAAACAAAAEUAAAAAIEAQAAAAEAAAAoIQAhgAAgBgA=</HashCode>
+      <FileName>include\Graphics\Color.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix3x3&lt;real&gt;" Collapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABAAgACEAQBAQBAEBUEQAAACAIwAgBAAAA=</HashCode>
+      <FileName>include\Math\Matrix3x3.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix4x4&lt;real&gt;" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAAgASAABAAgAQUASBAQBACBUEAgAACAMwAgBAAEA=</HashCode>
+      <FileName>include\Math\Matrix4x4.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quaternion&lt;real&gt;" Collapsed="true">
+    <Position X="21.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIQAAhAAAADQAgBAAEQQAQAAAAAAAAQgAAhgAQBQAAA=</HashCode>
+      <FileName>include\Math\Quaternion.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector3&lt;real&gt;" Collapsed="true">
+    <Position X="24.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAAICQAgBAAEQIAQAAAAEAAqQAAABgCwAAAAA=</HashCode>
+      <FileName>include\Math\Vector3.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector4&lt;real&gt;" Collapsed="true">
+    <Position X="26.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAECQAgBAAEQIAQAAAAEAAiQAAAhgCQAAAAA=</HashCode>
+      <FileName>include\Math\Vector4.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GLSL::Shader" Collapsed="true">
+    <Position X="23" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAAQAAACAAAAAgAAAAAAAAAAAAEAEAABAAGAAACAAA=</HashCode>
+      <FileName>source\GLProgram.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GLSL::Program" Collapsed="true">
+    <Position X="19.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAIAQAgAAAAAAgAAAAAAAhAgggEAAAEBAAHAAAAgkA=</HashCode>
+      <FileName>include\GLProgram.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Actor" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAIgAAAAAgAAAABAAAAAAAAAABBAAAAAAAAAoAAQ=</HashCode>
+      <FileName>include\Actor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Scene" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAAgAEQADCAAgIAAAGAIQgIAAEggCBACIAAAACA=</HashCode>
+      <FileName>include\Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Camera" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQKMAggATGkQAeAAhBAITCjA0AAYUBsAgC6tAGACEA=</HashCode>
+      <FileName>include\Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Renderer" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAgAAAAIgABAAAIAAAAAIAIAAAACAAEAcIAE=</HashCode>
+      <FileName>include\Renderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::GLPainter" Collapsed="true">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAQAQABAAAAAACAAAAAAAAAQBAAAAAAAAEAAAE=</HashCode>
+      <FileName>include\GLPainter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::GLVertexArray" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAQIAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAQAAA=</HashCode>
+      <FileName>include\GLRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::GLRenderer" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACiIAQAAQQAIBAABDABCAAIAIQAAQAAAAACAAgI0AAU=</HashCode>
+      <FileName>include\GLRenderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Light" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAIwAAEAAABACAAAAEAAAAAAw=</HashCode>
+      <FileName>include\Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Finish" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEIAAg=</HashCode>
+      <FileName>include\Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Material" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAARAEAAAAAAAAAAAAAAAIAABAAA=</HashCode>
+      <FileName>include\Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::MaterialFactory" Collapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgACAAAIAgQAAAAAAAAAAAAAAAAABCAAA=</HashCode>
+      <FileName>include\Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::MeshReader" Collapsed="true">
+    <Position X="23" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\MeshReader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::MeshSweeper" Collapsed="true">
+    <Position X="6.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAQAAAAAACAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\MeshSweeper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::TriangleMesh" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgYAQAAAAAAAAAAAAAAAAAAAAAEAAAgEAAQEAAAAAA=</HashCode>
+      <FileName>include\TriangleMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Model" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAAAAAAAAAAAAIAIAAAAAAAAQAAAAgAAAAABAAAAA=</HashCode>
+      <FileName>include\Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Primitive" Collapsed="true">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAIAIAAACAAAAQAAAAAAAAAAIBAAAA=</HashCode>
+      <FileName>include\Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::SceneComponent" Collapsed="true">
+    <Position X="15.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAIAAAAAIAAAAAAAABAAAAAA=</HashCode>
+      <FileName>include\SceneComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::Sweeper">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Graphics::Sweeper::Polyline" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>include\Sweeper.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Typedef Name="Graphics::Sweeper::PolylineArray" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>include\Sweeper.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Typedef>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Sweeper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics::TriangleMeshShape" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAABAAAgAAACEBAAAAA=</HashCode>
+      <FileName>include\TriangleMeshShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::Array&lt;T&gt;" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAACAAECIIAAAAAAAEAAABAAVAwAEACQAA=</HashCode>
+      <FileName>include\Array.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::ArrayIterator&lt;T&gt;" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAEAAAIAAAAQAkABAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Array.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::PointerArray&lt;T&gt;" Collapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAAAAAAAAAAgAAECIIAIAAAAAEAAAAAAVAwAEACRAA=</HashCode>
+      <FileName>include\Array.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::PointerArrayIterator&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAEAAAAAAAAQAkABAAAgAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>include\Array.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::ListImp&lt;T&gt;" Collapsed="true">
+    <Position X="10.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEEAAgAAgAAAEAIAAAAAAAAQAAAAAABAgCAACQwA=</HashCode>
+      <FileName>include\List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::ListIteratorImp&lt;T&gt;" Collapsed="true">
+    <Position X="1.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAhAEAAAAAAAEQAEAAAAAgAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>include\List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::List&lt;T&gt;" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAEAAAAAAgEAAEAIAAAAAgAAAAAAAACAAgAAACQQI=</HashCode>
+      <FileName>include\List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::ListIterator&lt;T&gt;" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAQEAAEQAEAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Collections::ListElement&lt;T&gt;" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABQAAAAAAACAAAABAAAIAAAA=</HashCode>
+      <FileName>include\List.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Exception" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAgACA=</HashCode>
+      <FileName>include\Exception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::IndexOutOfBoundsException" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Exception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Precondition" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>include\Exception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::NameableObject" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAEAABAAAAEAAAAAAA=</HashCode>
+      <FileName>include\NameableObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::Object" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAQAAAAAgAAAAAAAAAgAAAAEAAAAAEAAAAAA=</HashCode>
+      <FileName>include\Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System::ObjectPtr&lt;T&gt;" Collapsed="true">
+    <Position X="24.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACAAAAAAAAAAAwAAAgAAAAAAAAAgAAAABAA=</HashCode>
+      <FileName>include\Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geometry::Bounds3" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBgAAAAQIAAAAAAAAYQAIAACAAEGAAAAgAAAAAAAQAE=</HashCode>
+      <FileName>include\Geometry\Bounds3.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="VRC" Collapsed="true">
+    <Position X="23" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAEBIAAAgAAAA=</HashCode>
+      <FileName>source\Camera.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="tinyxml2::Entity" Collapsed="true">
+    <Position X="19.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAECAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\tinyxml2.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Graphics::Triangle" Collapsed="true">
+    <Position X="21.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAABAAAAAAAAABSEAAAAAAIAABAAAAA=</HashCode>
+      <FileName>include\TriangleMesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="ObjectParamFunc" Collapsed="true">
+    <Position X="23" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\GLProgram.cpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="InfoLogFunc" Collapsed="true">
+    <Position X="19.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>source\GLProgram.cpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Graphics::Actors" Collapsed="true">
+    <Position X="13.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Actor.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Graphics::ActorIterator" Collapsed="true">
+    <Position X="3.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Actor.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint" Collapsed="true">
+    <Position X="19.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Camera.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int8" Collapsed="true">
+    <Position X="26.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint8" Collapsed="true">
+    <Position X="26.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int16" Collapsed="true">
+    <Position X="21.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint16" Collapsed="true">
+    <Position X="21.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int32" Collapsed="true">
+    <Position X="23" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint32" Collapsed="true">
+    <Position X="23" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="int64" Collapsed="true">
+    <Position X="24.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uint64" Collapsed="true">
+    <Position X="24.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="uchar" Collapsed="true">
+    <Position X="26.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="ushort" Collapsed="true">
+    <Position X="21.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="ulong" Collapsed="true">
+    <Position X="19.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Core\Global.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Graphics::Lights" Collapsed="true">
+    <Position X="10.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Light.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Graphics::LightIterator" Collapsed="true">
+    <Position X="1.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Light.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Graphics::MaterialIterator" Collapsed="true">
+    <Position X="10.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Material.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="mat3" Collapsed="true">
+    <Position X="19.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Math\Matrix3x3.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="mat4" Collapsed="true">
+    <Position X="21.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Math\Matrix4x4.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="quat" Collapsed="true">
+    <Position X="24.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Math\Quaternion.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="vec3" Collapsed="true">
+    <Position X="23" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Math\Vector3.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="vec4" Collapsed="true">
+    <Position X="24.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>include\Math\Vector4.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="GLSL_ErrorCode" Collapsed="true">
+    <Position X="19.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAEAAAAAAACCCCAAAAAAAAAAAAAAAgAAAIAACBAA=</HashCode>
+      <FileName>source\GLProgram.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GLSL::ShaderSource" Collapsed="true">
+    <Position X="21.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>include\GLProgram.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

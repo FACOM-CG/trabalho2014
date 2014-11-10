@@ -159,5 +159,8 @@
     <ClInclude Include="include\TriangleMesh.h" />
     <ClInclude Include="include\TriangleMeshShape.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
