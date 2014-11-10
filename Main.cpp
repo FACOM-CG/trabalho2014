@@ -385,7 +385,39 @@ createScene(bool isDefault, char* filename = NULL)
 			}
 			else if (strcmp(aux->Value(), "mesh") == 0)
 			{
-				//TODO: alocar mesh
+				TriangleMesh* s;
+
+				string meshFile = aux->Attribute("file");
+				s = MeshReader().execute(meshFile.c_str());
+
+				XMLElement* aux2;
+				aux2 = aux;
+
+				if (aux2->FirstChildElement("transform"))
+				{
+					XMLElement* aux3;
+					aux3 = aux2;
+					if (aux3->FirstChildElement("scale"))
+					{
+						//TODO
+					}
+					else if (aux3->FirstChildElement("rotation"))
+					{
+						//TODO
+					}
+					else if (aux3->FirstChildElement("position"))
+					{
+						//TODO
+					}
+					
+				}
+				else if (aux2->FirstChildElement("material"))
+				{
+					//TODO
+				}
+
+				scene->addActor(newActor(s, vec3(2, -4, -10)));
+				
 			}
 			else if (strcmp(aux->Value(), "sphere") == 0)
 			{
